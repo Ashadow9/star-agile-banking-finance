@@ -1,16 +1,28 @@
-- name : Configure Docker on EC2 Instances
-  hosts : all
+- name: Configure Docker on EC2 Instances
+  hosts: all
   become: true
-  connection : ssh
-  tasks : 
-  - name: updating apt
-    command : sudo apt update
+  connection: ssh
+  tasks:
+    - name: Updating apt
+      command: sudo apt update
 
-  - name : Install Docker
-    command : sudo apt install docker -y
+    - name: Install required packages
+      command: sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 
-  - name : Start Docker Service
-    command : sudo systemctl start docker
+    - name: Add Docker's official GPG key
+      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-  - name: Deploy Docker Container
-    command: docker run -itd -p 8084:8081 skywalkerdarth/banking-project-demo:3.0
+    - name: Add Docker repository
+      command: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+    - name: Update apt again
+      command: sudo apt update
+
+    - name: Install Docker
+      command: sudo apt install docker.io -y
+
+    - name: Start Docker Service
+      command: sudo systemctl start docker
+
+    - name: Deploy Docker Container
+      command: docker run -itd -p 8084:8081 skywalkerdarth/banking-project-demo:3.0
