@@ -24,7 +24,7 @@ pipeline {
             }
        stage('Create Docker Image') {
            steps {
-               sh 'docker build -t cbabu85/banking-project-demo:3.0 .'
+               sh 'docker build -t skywalkerdarth/banking-project-demo:3.0 .'
                     }
                 }
        stage('Docker-Login') {
